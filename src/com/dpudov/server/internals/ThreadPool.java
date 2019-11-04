@@ -1,14 +1,33 @@
 package com.dpudov.server.internals;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class ThreadPool {
-    ConcurrentLinkedQueue<Runnable> queue;
+    private LinkedBlockingQueue<Runnable> queue;
+    private List<TaskExecutor> executors = new LinkedList<>();
+    private volatile boolean isRunning = true;
 
     public ThreadPool(ServerConfig config) {
-        queue = new ConcurrentLinkedQueue<>();
-
+        int threadLimit = config.getThreadLimit();
+        int cpuLimit = config.getCpuLimit();
+        queue = new LinkedBlockingQueue<>(threadLimit * 8);
+        TaskExecutor executor = new TaskExecutor(queue);
+        for (int i = 0; i < threadLimit; i++) {
+            executors.add(executor);
+        }
     }
 
     public void addRunnable(Runnable runnable) {
-        queue.add(runnable);
+        if (isRunning)
+            queue.add(runnable);
+    }
+
+    public void stop() {
+        isRunning = false;
+        for (TaskExecutor executor : executors) {
+            executor.stop();
+        }
     }
 }

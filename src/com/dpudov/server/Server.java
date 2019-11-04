@@ -10,10 +10,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server implements Runnable {
+    public static final String SERVER_NAME = "dpudov-highload-java-server";
     private ServerSocket socket;
     private ServerState state;
     private ServerConfig config;
     private ThreadPool pool;
+
 
     public Server(int port, ServerConfig config) throws IOException {
         this.socket = new ServerSocket(port);
@@ -27,7 +29,7 @@ public class Server implements Runnable {
         state.on();
         while (state.isRunning()) {
             try (Socket client = socket.accept()) {
-                pool.addRunnable(new Worker(client));
+                pool.addRunnable(new Worker(client, config.getDocumentRoot()));
             } catch (IOException e) {
                 if (state.isRunning()) {
                     e.printStackTrace();
