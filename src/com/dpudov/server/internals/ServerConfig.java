@@ -8,7 +8,9 @@ public class ServerConfig {
     public static final String CPU_LIMIT_KEY = "cpu_limit";
     public static final String THREAD_LIMIT_KEY = "thread_limit";
     public static final String DOCUMENT_ROOT_KEY = "document_root";
-
+    public static final String DEFAULT_CPU_LIMIT = "4";
+    public static final String DEFAULT_THREAD_LIMIT = "256";
+    public static final String DEFAULT_DOCUMENT_ROOT = "/var/www/html";
     private int cpuLimit;
     private int threadLimit;
     private String documentRoot;
@@ -39,9 +41,9 @@ public class ServerConfig {
         Properties config = new Properties();
         config.load(new FileInputStream(filename));
         ServerConfig.Builder builder = newBuilder();
-        builder.setCpuLimit(Integer.parseInt(config.getProperty(CPU_LIMIT_KEY)));
-        builder.setThreadLimit(Integer.parseInt(config.getProperty(THREAD_LIMIT_KEY)));
-        builder.setDocumentRoot(config.getProperty(DOCUMENT_ROOT_KEY));
+        builder.setCpuLimit(Integer.parseInt(config.getProperty(CPU_LIMIT_KEY, DEFAULT_CPU_LIMIT)));
+        builder.setThreadLimit(Integer.parseInt(config.getProperty(THREAD_LIMIT_KEY, DEFAULT_THREAD_LIMIT)));
+        builder.setDocumentRoot(config.getProperty(DOCUMENT_ROOT_KEY, DEFAULT_DOCUMENT_ROOT));
         return builder.build();
     }
 
