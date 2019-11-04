@@ -16,11 +16,15 @@ public class TaskExecutor implements Runnable {
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
-            Runnable task;
+
+            Runnable task = null;
             synchronized (queue) {
-                task = queue.remove();
+                if (!queue.isEmpty())
+                    task = queue.remove();
             }
-            task.run();
+            if (task != null) {
+                task.run();
+            }
         }
     }
 

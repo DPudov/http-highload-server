@@ -12,7 +12,7 @@ public class ThreadPool {
     public ThreadPool(ServerConfig config) {
         int threadLimit = config.getThreadLimit();
         int cpuLimit = config.getCpuLimit();
-        queue = new LinkedBlockingQueue<>(threadLimit * 8);
+        queue = new LinkedBlockingQueue<>(threadLimit * cpuLimit * 8);
         TaskExecutor executor = new TaskExecutor(queue);
         for (int i = 0; i < threadLimit; i++) {
             executors.add(executor);
