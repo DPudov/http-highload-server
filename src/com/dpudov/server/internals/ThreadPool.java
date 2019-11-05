@@ -19,12 +19,14 @@ public class ThreadPool {
         }
     }
 
-    public void addRunnable(Runnable runnable) {
-        if (isRunning)
+    public synchronized void addRunnable(Runnable runnable) {
+        if (isRunning) {
             queue.add(runnable);
+//            queue.notify();
+        }
     }
 
-    public void stop() {
+    public synchronized void stop() {
         isRunning = false;
         for (TaskExecutor executor : executors) {
             executor.stop();

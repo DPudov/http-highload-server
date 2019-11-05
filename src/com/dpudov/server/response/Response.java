@@ -1,10 +1,13 @@
 package com.dpudov.server.response;
 
+import com.dpudov.server.util.FilenameUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Response implements Writable {
     private static final String NEW_LINE = "\r\n";
@@ -19,16 +22,25 @@ public class Response implements Writable {
         this.headers = new HashMap<>();
         this.statusCode = statusCode;
         this.sendingFile = file;
+
+        try {
+            setContentType();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setContentLength();
     }
 
     public void send(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
         writer.write(getResponseLine());
         writer.write(NEW_LINE);
+//        System.out.println(headers.toString());
         for (String key : headers.keySet()) {
             writer.write(key + ":" + headers.get(key));
             writer.write(NEW_LINE);
         }
+        writer.write(NEW_LINE);
 
         if (sendingFile != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(sendingFile)));
@@ -63,6 +75,22 @@ public class Response implements Writable {
         String contentType = Files.probeContentType(source);
         if (contentType != null) {
             headers.put("Content-Type", contentType);
+        } else {
+            Optional<String> ext = FilenameUtils.getExtensionByStringHandling(source.toString());
+            if (ext.isPresent()) {
+                String extension = ext.get();
+                switch (extension) {
+                    case "swf":
+                        headers.put("Content-Type", "application/x-shockwave-flash");
+                        break;
+                    case "js":
+                        headers.put("Content-Type", "text/javascript");
+                        break;
+                    case "css":
+                        headers.put("Content-Type", "text/css");
+                        break;
+                }
+            }
         }
     }
 

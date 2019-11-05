@@ -19,14 +19,24 @@ public class RequestHandler {
         Writable response;
         switch (request.getMethod()) {
             case Method.GET:
+//                System.out.println("GET method handler");
                 Path requestedFile = Paths.get(documentRoot, path);
+//                System.out.println(requestedFile.toString());
                 if (requestedFile.normalize().startsWith(Paths.get(documentRoot).normalize())) {
                     if (Files.exists(requestedFile)) {
+//                        System.out.println("exists");
                         if (!Files.isDirectory(requestedFile)) {
+//                            System.out.println("not a directory");
                             response = new Response(ResponseCodes.STATUS_OK,
                                     new File(Paths.get(documentRoot, path).toString()));
                         } else {
-                            response = new EmptyResponse(ResponseCodes.STATUS_FORBIDDEN);
+                            if (Files.exists(Paths.get(requestedFile.normalize() + "/index.html"))) {
+                                response = new Response(ResponseCodes.STATUS_OK,
+                                        new File(Paths.get(requestedFile.normalize() + "/index.html").toString()));
+                            } else {
+//                                System.out.println("directory");
+                                response = new EmptyResponse(ResponseCodes.STATUS_FORBIDDEN);
+                            }
                         }
                     } else {
                         response = new EmptyResponse(ResponseCodes.STATUS_NOT_FOUND);
@@ -36,6 +46,7 @@ public class RequestHandler {
                 }
                 break;
             case Method.HEAD:
+//                System.out.println("HEAD method");
                 if (Files.exists(Paths.get(documentRoot, path))) {
                     response = new HeadResponse(ResponseCodes.STATUS_OK,
                             new File(Paths.get(documentRoot, path).toString()));

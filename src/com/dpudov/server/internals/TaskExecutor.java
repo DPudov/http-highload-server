@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TaskExecutor implements Runnable {
     private final LinkedBlockingQueue<Runnable> queue;
     private Thread newThread;
-    volatile boolean isRunning = true;
+    private volatile boolean isRunning = true;
 
     public TaskExecutor(LinkedBlockingQueue<Runnable> queue) {
         this.queue = queue;

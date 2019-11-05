@@ -22,7 +22,8 @@ public class EmptyResponse implements Writable {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
         writer.write(getResponseLine());
         writer.write(NEW_LINE);
-
+//        System.out.println("Empty response sending");
+//        System.out.println(headers.toString());
         for (String key : headers.keySet()) {
             writer.write(key + ":" + headers.get(key));
             writer.write(NEW_LINE);

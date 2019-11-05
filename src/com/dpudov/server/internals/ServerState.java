@@ -9,19 +9,19 @@ public class ServerState {
         this.isRunning = false;
     }
 
-    public void on() {
+    public synchronized void on() {
         isRunning = true;
     }
 
-    public void off() {
+    public synchronized void off() {
         isRunning = false;
     }
 
-    public void toggleRunning() {
+    public synchronized void toggleRunning() {
         isRunning = !isRunning;
     }
 
-    public boolean isRunning() {
+    public synchronized boolean isRunning() {
         return isRunning;
     }
 }
