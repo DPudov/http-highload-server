@@ -11,7 +11,6 @@ import java.util.HashMap;
 import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
 
 public class HeadResponse implements Writable {
-    private static final int BUFFER_SIZE = 4096;
     private final int statusCode;
     private final File sendingFile;
     private final HashMap<String, String> headers;

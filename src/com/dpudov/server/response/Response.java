@@ -1,5 +1,6 @@
 package com.dpudov.server.response;
 
+import com.dpudov.server.internals.Cache;
 import com.dpudov.server.util.FilenameUtils;
 import com.dpudov.server.util.Headers;
 
@@ -44,13 +45,22 @@ public class Response implements Writable {
         writer.write(NEW_LINE);
 
         if (sendingFile != null) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(sendingFile)));
-            char[] buffer = new char[BUFFER_SIZE];
-            int read;
-            while ((read = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, read);
+            char[] fromCache = Cache.serveFromCache(sendingFile.getAbsolutePath());
+            if (fromCache != null) {
+                writer.write(fromCache, 0, fromCache.length);
+            } else {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(sendingFile)));
+                CharArrayWriter cacheWriter = new CharArrayWriter();
+                char[] buffer = new char[BUFFER_SIZE];
+                int read;
+                while ((read = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, read);
+                    cacheWriter.write(buffer, 0, read);
+                }
+                Cache.writeToCache(sendingFile.getAbsolutePath(), cacheWriter.toCharArray());
+                cacheWriter.close();
+                reader.close();
             }
-            reader.close();
         }
 
         writer.flush();
