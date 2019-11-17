@@ -3,7 +3,6 @@ package com.dpudov.server;
 import com.dpudov.server.internals.ServerConfig;
 import com.dpudov.server.internals.ServerState;
 import com.dpudov.server.internals.ThreadPool;
-import com.dpudov.server.internals.Worker;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -38,7 +37,7 @@ public class Server implements Runnable {
                     e.printStackTrace();
                 }
             }
-            pool.addRunnable(new Worker(client, config.getDocumentRoot())); // Runnable не по значению
+            pool.addWorker(client);
         }
     }
 

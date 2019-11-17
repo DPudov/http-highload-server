@@ -13,11 +13,11 @@ import java.util.Calendar;
 
 public class Worker implements Runnable {
     private Socket connection;
-    private String documentRoot;
+    private DocumentRootContainer documentRootContainer;
 
-    public Worker(Socket connection, String documentRoot) {
+    public Worker(Socket connection, DocumentRootContainer documentRoot) {
         this.connection = connection;
-        this.documentRoot = documentRoot;
+        this.documentRootContainer = documentRoot;
     }
 
     @Override
@@ -28,13 +28,13 @@ public class Worker implements Runnable {
             connection.setSoTimeout(10000);
             requestStream = connection.getInputStream();
             responseStream = connection.getOutputStream();
-            RequestHandler requestProcessor = new RequestHandler(documentRoot);
+            RequestHandler requestProcessor = new RequestHandler(documentRootContainer.getDocumentRoot());
             Request request = Request.parse(requestStream);
 
             Writable response = requestProcessor.handle(request);
-            response.getHeaders().put("Server", Server.SERVER_NAME);
-            response.getHeaders().put("Date", Calendar.getInstance().getTime().toString());
-            response.getHeaders().put("Connection", "close");
+            response.getHeaders().put(Headers.SERVER, Server.SERVER_NAME);
+            response.getHeaders().put(Headers.DATE, Calendar.getInstance().getTime().toString());
+            response.getHeaders().put(Headers.CONNECTION, Headers.CLOSE);
 //            System.out.println("Response ready");
             response.send(responseStream);
         } catch (Exception e) {

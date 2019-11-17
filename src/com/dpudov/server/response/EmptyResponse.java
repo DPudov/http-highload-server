@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 public class EmptyResponse implements Writable {
-    private String protocol = "HTTP/1.1";
     private static final String NEW_LINE = "\r\n";
     private int statusCode;
     private HashMap<String, String> headers;
@@ -38,6 +37,7 @@ public class EmptyResponse implements Writable {
     }
 
     public String getResponseLine() {
+        String protocol = "HTTP/1.1";
         return protocol
                 + " "
                 + statusCode
