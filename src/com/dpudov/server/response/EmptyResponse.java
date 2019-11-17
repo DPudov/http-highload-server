@@ -6,8 +6,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
+import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
+
 public class EmptyResponse implements Writable {
-    private static final String NEW_LINE = "\r\n";
     private int statusCode;
     private HashMap<String, String> headers;
 
@@ -37,11 +38,7 @@ public class EmptyResponse implements Writable {
     }
 
     public String getResponseLine() {
-        String protocol = "HTTP/1.1";
-        return protocol
-                + " "
-                + statusCode
-                + " "
-                + ResponseCodes.statuses.getOrDefault(statusCode, "Method not allowed");
+
+        return ResponseConstants.PROTOCOL + " " + statusCode + " " + ResponseCodes.statuses.getOrDefault(statusCode, "Method not allowed");
     }
 }

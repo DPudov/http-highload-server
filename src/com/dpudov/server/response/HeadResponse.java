@@ -1,15 +1,17 @@
 package com.dpudov.server.response;
 
+import com.dpudov.server.util.Headers;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
+
 public class HeadResponse implements Writable {
-    private static final String NEW_LINE = "\r\n";
     private static final int BUFFER_SIZE = 4096;
-    private String protocol = "HTTP/1.1";
     private int statusCode;
     private File sendingFile;
     private HashMap<String, String> headers;
@@ -47,7 +49,7 @@ public class HeadResponse implements Writable {
     }
 
     public String getResponseLine() {
-        return protocol
+        return ResponseConstants.PROTOCOL
                 + " "
                 + statusCode
                 + " "
@@ -61,12 +63,12 @@ public class HeadResponse implements Writable {
         Path source = Paths.get(sendingFile.toURI());
         String contentType = Files.probeContentType(source);
         if (contentType != null) {
-            headers.put("Content-Type", contentType);
+            headers.put(Headers.CONTENT_TYPE, contentType);
         }
     }
 
     private void setContentLength() {
-        headers.put("Content-Length", String.valueOf(sendingFile.length()));
+        headers.put(Headers.CONTENT_LENGTH, String.valueOf(sendingFile.length()));
     }
 
 }

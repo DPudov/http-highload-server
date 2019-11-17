@@ -4,6 +4,7 @@ import com.dpudov.server.Server;
 import com.dpudov.server.request.Request;
 import com.dpudov.server.request.RequestHandler;
 import com.dpudov.server.response.Writable;
+import com.dpudov.server.util.Headers;
 
 import java.io.IOException;
 import java.io.InputStream;
