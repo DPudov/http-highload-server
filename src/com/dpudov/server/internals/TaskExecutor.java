@@ -5,7 +5,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TaskExecutor implements Runnable {
     private final LinkedBlockingQueue<Runnable> queue;
     private Thread newThread;
-    private volatile boolean isRunning = true;
 
     public TaskExecutor(LinkedBlockingQueue<Runnable> queue) {
         this.queue = queue;
@@ -19,8 +18,9 @@ public class TaskExecutor implements Runnable {
 
             Runnable task = null;
             synchronized (queue) {
-                if (!queue.isEmpty())
+                if (!queue.isEmpty()) {
                     task = queue.remove();
+                }
             }
             if (task != null) {
                 task.run();
@@ -28,8 +28,7 @@ public class TaskExecutor implements Runnable {
         }
     }
 
-    public void stop() {
-        isRunning = false;
+    public synchronized void stop() {
         newThread.interrupt();
     }
 }

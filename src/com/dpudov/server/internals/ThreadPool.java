@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ThreadPool {
     private LinkedBlockingQueue<Runnable> queue;
     private List<TaskExecutor> executors = new LinkedList<>();
-    private volatile boolean isRunning = true;
+    private boolean isRunning = true;
 
     public ThreadPool(ServerConfig config) {
         int threadLimit = config.getThreadLimit();

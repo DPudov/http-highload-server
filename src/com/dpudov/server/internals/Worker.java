@@ -22,8 +22,8 @@ public class Worker implements Runnable {
 
     @Override
     public void run() {
-        InputStream requestStream = null;
-        OutputStream responseStream = null;
+        InputStream requestStream;
+        OutputStream responseStream;
         try {
             connection.setSoTimeout(10000);
             requestStream = connection.getInputStream();
@@ -40,20 +40,6 @@ public class Worker implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (requestStream != null) {
-                    requestStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                if (responseStream != null) {
-                    responseStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             try {
                 connection.close();
             } catch (IOException e) {

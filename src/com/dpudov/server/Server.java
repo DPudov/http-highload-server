@@ -18,7 +18,7 @@ public class Server implements Runnable {
     private boolean isRunning = true;
     private int port;
 
-    public Server(int port, ServerConfig config) throws IOException {
+    public Server(int port, ServerConfig config) {
         this.port = port;
         this.state = new ServerState();
         this.config = config;
@@ -38,7 +38,7 @@ public class Server implements Runnable {
                     e.printStackTrace();
                 }
             }
-            pool.addRunnable(new Worker(client, config.getDocumentRoot()));
+            pool.addRunnable(new Worker(client, config.getDocumentRoot())); // Runnable не по значению
         }
     }
 
