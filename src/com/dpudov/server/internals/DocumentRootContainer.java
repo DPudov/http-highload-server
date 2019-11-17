@@ -11,7 +11,4 @@ class DocumentRootContainer {
         return documentRoot;
     }
 
-    public void setDocumentRoot(String documentRoot) {
-        this.documentRoot = documentRoot;
-    }
 }

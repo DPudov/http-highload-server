@@ -17,11 +17,10 @@ class TaskExecutor implements Runnable {
         while (!Thread.currentThread().isInterrupted()) {
 
             Runnable task = null;
-            synchronized (queue) {
-                if (!queue.isEmpty()) {
-                    task = queue.remove();
-                }
+            if (!queue.isEmpty()) {
+                task = queue.remove();
             }
+
             if (task != null) {
                 task.run();
             }

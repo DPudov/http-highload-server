@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cache {
-    private static Map<String, char[]> cacheMap = new HashMap<>();
+    private static final Map<String, char[]> cacheMap = new HashMap<>();
 
     public synchronized static void writeToCache(String location, char[] content) {
         cacheMap.put(location, content);
