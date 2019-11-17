@@ -14,7 +14,7 @@ import java.util.Optional;
 import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
 
 public class Response implements Writable {
-    private static final int BUFFER_SIZE = 4096;
+    private static final int BUFFER_SIZE = 4 * 4096;
     private final int statusCode;
     private final File sendingFile;
     private HashMap<String, String> headers;
@@ -50,7 +50,7 @@ public class Response implements Writable {
                 writer.write(fromCache, 0, fromCache.length);
             } else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(sendingFile)));
-                CharArrayWriter cacheWriter = new CharArrayWriter();
+                CharArrayWriter cacheWriter = new CharArrayWriter(BUFFER_SIZE);
                 char[] buffer = new char[BUFFER_SIZE];
                 int read;
                 while ((read = reader.read(buffer)) != -1) {
