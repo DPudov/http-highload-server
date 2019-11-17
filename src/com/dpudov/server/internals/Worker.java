@@ -12,9 +12,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Calendar;
 
-public class Worker implements Runnable {
-    private Socket connection;
-    private DocumentRootContainer documentRootContainer;
+class Worker implements Runnable {
+    private final Socket connection;
+    private final DocumentRootContainer documentRootContainer;
 
     public Worker(Socket connection, DocumentRootContainer documentRoot) {
         this.connection = connection;

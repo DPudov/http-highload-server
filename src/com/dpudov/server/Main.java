@@ -5,8 +5,8 @@ import com.dpudov.server.internals.ServerConfig;
 import java.io.IOException;
 
 public class Main {
-    public static final String DEFAULT_CONFIG_FILE_NAME = "./etc/httpd.conf";
-    public static final String DEFAULT_PORT = "80";
+    private static final String DEFAULT_CONFIG_FILE_NAME = "./etc/httpd.conf";
+    private static final String DEFAULT_PORT = "80";
 
     public static void main(String[] args) {
         try {

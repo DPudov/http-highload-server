@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class RequestHandler {
-    private String documentRoot;
+    private final String documentRoot;
 
     public RequestHandler(String documentRoot) {
         this.documentRoot = documentRoot;

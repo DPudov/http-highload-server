@@ -1,6 +1,6 @@
 package com.dpudov.server.internals;
 
-public class ServerState {
+class ServerState {
     public static final boolean SERVER_ON = true;
     public static final boolean SERVER_OFF = false;
     private boolean isRunning;

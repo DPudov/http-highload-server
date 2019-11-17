@@ -10,7 +10,7 @@ public class ResponseCodes {
     public static final int STATUS_METHOD_NOT_ALLOWED = 405;
     public static final int STATUS_DEFAULT = 405;
 
-    public static Map<Integer, String> statuses;
+    public static final Map<Integer, String> statuses;
 
     static {
         statuses = Map.of(STATUS_OK, "OK",

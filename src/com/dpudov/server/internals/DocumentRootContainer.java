@@ -1,6 +1,6 @@
 package com.dpudov.server.internals;
 
-public class DocumentRootContainer {
+class DocumentRootContainer {
     private String documentRoot;
 
     public DocumentRootContainer(String documentRoot) {

@@ -1,6 +1,7 @@
 package com.dpudov.server.response;
 
 import com.dpudov.server.util.FilenameUtils;
+import com.dpudov.server.util.Headers;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,12 +10,12 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
+
 public class Response implements Writable {
-    private static final String NEW_LINE = "\r\n";
     private static final int BUFFER_SIZE = 4096;
-    private String protocol = "HTTP/1.1";
-    private int statusCode;
-    private File sendingFile;
+    private final int statusCode;
+    private final File sendingFile;
     private HashMap<String, String> headers;
 
 
@@ -55,8 +56,8 @@ public class Response implements Writable {
         writer.flush();
     }
 
-    public String getResponseLine() {
-        return protocol
+    private String getResponseLine() {
+        return ResponseConstants.PROTOCOL
                 + " "
                 + statusCode
                 + " "
@@ -74,20 +75,20 @@ public class Response implements Writable {
         Path source = Paths.get(sendingFile.toURI());
         String contentType = Files.probeContentType(source);
         if (contentType != null) {
-            headers.put("Content-Type", contentType);
+            headers.put(Headers.CONTENT_TYPE, contentType);
         } else {
             Optional<String> ext = FilenameUtils.getExtensionByStringHandling(source.toString());
             if (ext.isPresent()) {
                 String extension = ext.get();
                 switch (extension) {
                     case "swf":
-                        headers.put("Content-Type", "application/x-shockwave-flash");
+                        headers.put(Headers.CONTENT_TYPE, "application/x-shockwave-flash");
                         break;
                     case "js":
-                        headers.put("Content-Type", "text/javascript");
+                        headers.put(Headers.CONTENT_TYPE, "text/javascript");
                         break;
                     case "css":
-                        headers.put("Content-Type", "text/css");
+                        headers.put(Headers.CONTENT_TYPE, "text/css");
                         break;
                 }
             }
@@ -95,22 +96,10 @@ public class Response implements Writable {
     }
 
     private void setContentLength() {
-        headers.put("Content-Length", String.valueOf(sendingFile.length()));
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
+        headers.put(Headers.CONTENT_LENGTH, String.valueOf(sendingFile.length()));
     }
 
     public void setHeaders(HashMap<String, String> headers) {
         this.headers = headers;
-    }
-
-    public String getProtocol() {
-        return protocol;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
     }
 }

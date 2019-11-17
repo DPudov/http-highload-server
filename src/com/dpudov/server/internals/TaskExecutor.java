@@ -2,9 +2,9 @@ package com.dpudov.server.internals;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class TaskExecutor implements Runnable {
+class TaskExecutor implements Runnable {
     private final LinkedBlockingQueue<Runnable> queue;
-    private Thread newThread;
+    private final Thread newThread;
 
     public TaskExecutor(LinkedBlockingQueue<Runnable> queue) {
         this.queue = queue;

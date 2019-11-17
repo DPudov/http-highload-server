@@ -25,7 +25,7 @@ public class Request {
 
     private boolean keepAlive = false;
 
-    public Request() {
+    private Request() {
         headers = new HashMap<>();
         params = new HashMap<>();
     }

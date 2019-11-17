@@ -12,9 +12,9 @@ import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
 
 public class HeadResponse implements Writable {
     private static final int BUFFER_SIZE = 4096;
-    private int statusCode;
-    private File sendingFile;
-    private HashMap<String, String> headers;
+    private final int statusCode;
+    private final File sendingFile;
+    private final HashMap<String, String> headers;
 
 
     public HeadResponse(int statusCode, File file) {
@@ -48,7 +48,7 @@ public class HeadResponse implements Writable {
         return headers;
     }
 
-    public String getResponseLine() {
+    private String getResponseLine() {
         return ResponseConstants.PROTOCOL
                 + " "
                 + statusCode

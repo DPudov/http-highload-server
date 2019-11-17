@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ThreadPool {
-    private LinkedBlockingQueue<Runnable> queue;
-    private List<TaskExecutor> executors = new LinkedList<>();
+    private final LinkedBlockingQueue<Runnable> queue;
+    private final List<TaskExecutor> executors = new LinkedList<>();
     private boolean isRunning = true;
-    private DocumentRootContainer documentRoot;
+    private final DocumentRootContainer documentRoot;
 
     public ThreadPool(ServerConfig config) {
         int threadLimit = config.getThreadLimit();

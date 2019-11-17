@@ -9,8 +9,8 @@ import java.util.HashMap;
 import static com.dpudov.server.response.ResponseConstants.NEW_LINE;
 
 public class EmptyResponse implements Writable {
-    private int statusCode;
-    private HashMap<String, String> headers;
+    private final int statusCode;
+    private final HashMap<String, String> headers;
 
     public EmptyResponse(int statusCode) {
         this.headers = new HashMap<>();
@@ -37,7 +37,7 @@ public class EmptyResponse implements Writable {
         return headers;
     }
 
-    public String getResponseLine() {
+    private String getResponseLine() {
 
         return ResponseConstants.PROTOCOL + " " + statusCode + " " + ResponseCodes.statuses.getOrDefault(statusCode, "Method not allowed");
     }

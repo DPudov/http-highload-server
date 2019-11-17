@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ServerConfig {
-    public static final String CPU_LIMIT_KEY = "cpu_limit";
-    public static final String THREAD_LIMIT_KEY = "thread_limit";
-    public static final String DOCUMENT_ROOT_KEY = "document_root";
-    public static final String DEFAULT_CPU_LIMIT = "4";
-    public static final String DEFAULT_THREAD_LIMIT = "256";
-    public static final String DEFAULT_DOCUMENT_ROOT = "/var/www/html";
+    private static final String CPU_LIMIT_KEY = "cpu_limit";
+    private static final String THREAD_LIMIT_KEY = "thread_limit";
+    private static final String DOCUMENT_ROOT_KEY = "document_root";
+    private static final String DEFAULT_CPU_LIMIT = "4";
+    private static final String DEFAULT_THREAD_LIMIT = "256";
+    private static final String DEFAULT_DOCUMENT_ROOT = "/var/www/html";
     private int cpuLimit;
     private int threadLimit;
     private String documentRoot;
@@ -47,31 +47,28 @@ public class ServerConfig {
         return builder.build();
     }
 
-    public static Builder newBuilder() {
+    private static Builder newBuilder() {
         return new ServerConfig().new Builder();
     }
 
-    public class Builder {
+    class Builder {
         private Builder() {
 
         }
 
-        public Builder setCpuLimit(int cpuLimit) {
+        void setCpuLimit(int cpuLimit) {
             ServerConfig.this.cpuLimit = cpuLimit;
-            return this;
         }
 
-        public Builder setDocumentRoot(String documentRoot) {
+        void setDocumentRoot(String documentRoot) {
             ServerConfig.this.documentRoot = documentRoot;
-            return this;
         }
 
-        public Builder setThreadLimit(int threadLimit) {
+        void setThreadLimit(int threadLimit) {
             ServerConfig.this.threadLimit = threadLimit;
-            return this;
         }
 
-        public ServerConfig build() {
+        ServerConfig build() {
             return ServerConfig.this;
         }
     }
