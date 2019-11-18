@@ -6,22 +6,30 @@ import com.dpudov.server.internals.ThreadPool;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server implements Runnable {
     public static final String SERVER_NAME = "dpudov-highload-java-server";
     private ServerSocket socket;
-    private final ThreadPool pool;
+    private final List<ThreadPool> pools;
     private boolean isRunning = true;
     private final int port;
+    private final int cpuLimit;
 
     public Server(int port, ServerConfig config) {
         this.port = port;
-        this.pool = new ThreadPool(config);
+        this.cpuLimit = config.getCpuLimit();
+        this.pools = new ArrayList<>(config.getCpuLimit());
+        for (int i = 0; i < cpuLimit; i++) {
+            pools.add(new ThreadPool(config));
+        }
     }
 
     @Override
     public void run() {
         openServerSocket();
+        int currentPool = 0;
         while (isRunning()) {
             Socket client = null;
             try {
@@ -31,7 +39,9 @@ public class Server implements Runnable {
                     e.printStackTrace();
                 }
             }
-            pool.addWorker(client);
+
+            pools.get(currentPool).addWorker(client);
+            currentPool = (currentPool + 1) % cpuLimit;
         }
     }
 
@@ -44,7 +54,9 @@ public class Server implements Runnable {
         isRunning = false;
         try {
             socket.close();
-            pool.stop();
+            for (ThreadPool pool : pools) {
+                pool.stop();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

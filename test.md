@@ -227,3 +227,60 @@ Percentage of the requests served within a certain time (ms)
   98%    102
   99%    140
  100%    184 (longest request)
+
+## mbest
+
+$ ab -n 20000 -c 500 localhost:80/httptest/jquery-1.9.1.js
+This is ApacheBench, Version 2.3 <$Revision: 1807734 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 2000 requests
+Completed 4000 requests
+Completed 6000 requests
+Completed 8000 requests
+Completed 10000 requests
+Completed 12000 requests
+Completed 14000 requests
+Completed 16000 requests
+Completed 18000 requests
+Completed 20000 requests
+Finished 20000 requests
+
+
+Server Software:        pudov-highload-java-server
+Server Hostname:        localhost
+Server Port:            80
+
+Document Path:          /httptest/jquery-1.9.1.js
+Document Length:        268381 bytes
+
+Concurrency Level:      500
+Time taken for tests:   10.673 seconds
+Complete requests:      20000
+Failed requests:        0
+Total transferred:      5370980000 bytes
+HTML transferred:       5367620000 bytes
+Requests per second:    1873.93 [#/sec] (mean)
+Time per request:       266.818 [ms] (mean)
+Time per request:       0.534 [ms] (mean, across all concurrent requests)
+Transfer rate:          491448.46 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   2.3      0      20
+Processing:    12  263  25.8    266     296
+Waiting:       10  262  25.8    266     295
+Total:         33  263  23.7    266     296
+
+Percentage of the requests served within a certain time (ms)
+  50%    266
+  66%    270
+  75%    273
+  80%    274
+  90%    278
+  95%    281
+  98%    284
+  99%    286
+ 100%    296 (longest request)

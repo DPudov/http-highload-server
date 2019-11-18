@@ -13,9 +13,8 @@ public class ThreadPool {
 
     public ThreadPool(ServerConfig config) {
         int threadLimit = config.getThreadLimit();
-        int cpuLimit = config.getCpuLimit();
         documentRoot = new DocumentRootContainer(config.getDocumentRoot());
-        queue = new LinkedBlockingQueue<>(threadLimit * cpuLimit * 8);
+        queue = new LinkedBlockingQueue<>(threadLimit);
         TaskExecutor executor = new TaskExecutor(queue);
         for (int i = 0; i < threadLimit; i++) {
             executors.add(executor);
@@ -24,7 +23,11 @@ public class ThreadPool {
 
     private synchronized void addWorker(Runnable runnable) {
         if (isRunning) {
-            queue.add(runnable);
+            try {
+                queue.put(runnable);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 //            queue.notify();
         }
     }
