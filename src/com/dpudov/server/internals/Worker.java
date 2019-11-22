@@ -39,7 +39,7 @@ class Worker implements Runnable {
 //            System.out.println("Response ready");
             response.send(responseStream);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             try {
                 connection.close();

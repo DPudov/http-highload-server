@@ -21,7 +21,7 @@ public class ThreadPool {
         }
     }
 
-    private synchronized void addWorker(Runnable runnable) {
+    private void addWorker(Runnable runnable) {
         if (isRunning) {
             try {
                 queue.put(runnable);

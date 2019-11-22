@@ -34,14 +34,19 @@ public class Server implements Runnable {
             Socket client = null;
             try {
                 client = socket.accept();
+                pools.get(currentPool).addWorker(client);
+                currentPool = (currentPool + 1) % cpuLimit;
             } catch (IOException e) {
                 if (isRunning()) {
                     e.printStackTrace();
                 }
-            }
 
-            pools.get(currentPool).addWorker(client);
-            currentPool = (currentPool + 1) % cpuLimit;
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
