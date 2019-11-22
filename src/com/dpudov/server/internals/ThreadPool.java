@@ -3,10 +3,11 @@ package com.dpudov.server.internals;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class ThreadPool {
-    private final LinkedBlockingQueue<Runnable> queue;
+    private final BlockingQueue<Runnable> queue;
     private final List<TaskExecutor> executors = new LinkedList<>();
     private boolean isRunning = true;
     private final DocumentRootContainer documentRoot;
@@ -14,9 +15,9 @@ public class ThreadPool {
     public ThreadPool(ServerConfig config) {
         int threadLimit = config.getThreadLimit();
         documentRoot = new DocumentRootContainer(config.getDocumentRoot());
-        queue = new LinkedBlockingQueue<>(threadLimit);
+        queue = new ArrayBlockingQueue<>(threadLimit + 1);
         TaskExecutor executor = new TaskExecutor(queue);
-        for (int i = 0; i < threadLimit; i++) {
+        for (int i = 0; i < threadLimit + 1; i++) {
             executors.add(executor);
         }
     }
@@ -28,7 +29,6 @@ public class ThreadPool {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            queue.notify();
         }
     }
 

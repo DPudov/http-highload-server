@@ -1,12 +1,12 @@
 package com.dpudov.server.internals;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 class TaskExecutor implements Runnable {
-    private final LinkedBlockingQueue<Runnable> queue;
+    private final BlockingQueue<Runnable> queue;
     private final Thread newThread;
 
-    public TaskExecutor(LinkedBlockingQueue<Runnable> queue) {
+    public TaskExecutor(BlockingQueue<Runnable> queue) {
         this.queue = queue;
         newThread = new Thread(this);
         newThread.start();
@@ -15,22 +15,12 @@ class TaskExecutor implements Runnable {
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
-
-            Runnable task = null;
-//            synchronized (queue) {
-            if (!queue.isEmpty()) {
-                task = queue.remove();
-            }
-            if (task != null) {
+            try {
+                Runnable task = queue.take();
                 task.run();
-            } else {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-
-                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-//            }
         }
     }
 

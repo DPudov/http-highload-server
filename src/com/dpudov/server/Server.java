@@ -40,12 +40,6 @@ public class Server implements Runnable {
                 if (isRunning()) {
                     e.printStackTrace();
                 }
-
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
             }
         }
     }
